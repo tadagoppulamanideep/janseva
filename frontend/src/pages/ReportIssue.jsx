@@ -473,7 +473,7 @@ function ReportIssue() {
                         <p>
                             You don't need to select an issue
                             category. Upload a clear photo and
-                            JanaSeva AI will automatically identify
+                            JanSeva AI will automatically identify
                             the civic problem and assign it to the
                             appropriate department.
                         </p>
@@ -826,7 +826,7 @@ function ReportIssue() {
                     </button>
 
                     <p className="submit-note">
-                        Your photo will be analyzed by JanaSeva AI
+                        Your photo will be analyzed by JanSeva AI
                         before the report is routed.
                     </p>
 

@@ -340,7 +340,7 @@ function AdminDashboard() {
                     </div>
 
                     <h1>
-                        JanaSeva Admin Dashboard
+                        JanSeva Admin Dashboard
                     </h1>
 
                     <p>

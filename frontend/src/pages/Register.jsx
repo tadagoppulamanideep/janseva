@@ -53,7 +53,7 @@ function Register() {
             <div className="auth-info">
 
                 <div className="auth-logo">
-                    🏛️ <span>JanaSeva</span>
+                    🏛️ <span>JanSeva</span>
                 </div>
 
                 <h1>

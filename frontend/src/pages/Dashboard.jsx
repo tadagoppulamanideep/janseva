@@ -26,7 +26,7 @@ function Dashboard() {
                     </div>
 
                     <h1>
-                        Welcome to <span>JanaSeva</span> 👋
+                        Welcome to <span>JanSeva</span> 👋
                     </h1>
 
                     {user && (
@@ -170,7 +170,7 @@ function Dashboard() {
 
                     <p>
                         Upload a photo of the civic problem and
-                        JanaSeva's AI analyzes the image to identify
+                        JanSeva's AI analyzes the image to identify
                         the issue and route it to the appropriate
                         department.
                     </p>
@@ -192,12 +192,12 @@ function Dashboard() {
             </section>
 
 
-            {/* How JanaSeva Works */}
+            {/* How JanSeva Works */}
             <section className="how-section">
 
                 <div className="section-heading">
 
-                    <h2>How JanaSeva Works</h2>
+                    <h2>How JanSeva Works</h2>
 
                     <p>
                         From reporting a problem to getting it resolved
