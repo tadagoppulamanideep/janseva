@@ -602,22 +602,7 @@ select option {
 
 /* Links */
 a {
-    color: #2563eb;
-}
-Important
-
-CSS file lo already unna background: #000, background-color: #000, color: #ccc, color: #aaa lantivi stronger rules unte avi still apply avvachu.
-
-Ippudu first ee code bottom lo paste chesi save cheyyi → browser refresh cheyyi.
-
-Still black background/light-grey text unte, current App.css file upload cheyyi. Nenu exact ga ekkada change cheyyalo cheptha.
-
-login page ui change cheyyu 
-
-Sure 👍 Login page UI ni clean, modern, white-theme lo change cheddam.
-
-Nuvvu current Login.jsx and App.css upload/paste cheyyi. Avi chusi existing functionality (login API, JWT, role redirect) em change cheyyakunda UI matrame redesign chestha.
-
+    color: #2563eb;}
 body {
 margin: 0;
 font-family: Arial, sans-serif;
@@ -1799,14 +1784,14 @@ position: relative;
 z-index: 2;
 }
 
-.timeline-item()::before {
-content: "";
-position: absolute;
-left: 14px;
-top: 30px;
-width: 2px;
-height: calc(100% - 5px);
-background-color: #d5dce3;
+.timeline-item::before {
+  content: "";
+  position: absolute;
+  left: 14px;
+  top: 30px;
+  width: 2px;
+  height: calc(100% - 5px);
+  background-color: #d5dce3;
 }
 
 .timeline-content {
@@ -2244,15 +2229,13 @@ width: 100%;
 height: 4px;
 background-color: #1f4e79;
 }
-
-.citizen-dashboard .dashboard-card(2)::before {
-background-color: #198754;
+.citizen-dashboard .dashboard-card:nth-child(2)::before {
+  background-color: #198754;
 }
 
-.citizen-dashboard .dashboard-card(3)::before {
-background-color: #6f42c1;
+.citizen-dashboard .dashboard-card:nth-child(3)::before {
+  background-color: #6f42c1;
 }
-
 .citizen-dashboard .dashboard-card button {
 transition: 0.2s;
 }
@@ -4015,9 +3998,9 @@ padding-bottom: 25px;
 padding-bottom: 0;
 }
 
-.timeline-item()::before {
+.timeline-item::before {
 content: "";
-position: absolute;
+position : absolute;
 left: 14px;
 top: 30px;
 bottom: 0;
@@ -4416,12 +4399,11 @@ align-items: center;
 justify-content: center;
 font-size: 21px;
 }
-
-.department-ai-banner > div(2) {
-flex: 1;
-display: flex;
-flex-direction: column;
-gap: 3px;
+.department-ai-banner > div:nth-child(2) {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
 }
 
 .department-ai-banner span {
