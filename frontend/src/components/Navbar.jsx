@@ -47,7 +47,7 @@ function Navbar() {
                 <span className="logo-icon">🏛️</span>
 
                 <span className="logo-text">
-                    JanaSeva
+                    JanSeva
                 </span>
             </div>
 

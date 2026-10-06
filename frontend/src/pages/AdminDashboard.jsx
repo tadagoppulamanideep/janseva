@@ -60,9 +60,15 @@ function AdminDashboard() {
             });
 
             if (response.data.success) {
+                console.log(
+                    "ADMIN REPORTS:",
+                    response.data.reports
+                );
 
-                console.log("ADMIN REPORTS:", response.data.reports);
-                setReports(response.data.reports || []);
+                setReports(
+                    response.data.reports || []
+                );
+
                 setMessage("");
             }
 
@@ -84,7 +90,8 @@ function AdminDashboard() {
 
     const getCount = (status) => {
         return reports.filter(
-            (report) => report.status === status
+            (report) =>
+                report.status === status
         ).length;
     };
 
@@ -116,7 +123,9 @@ function AdminDashboard() {
     // DEPARTMENT SUMMARY
     // ======================================================
 
-    const getDepartmentReports = (departmentId) => {
+    const getDepartmentReports = (
+        departmentId
+    ) => {
         return reports.filter(
             (report) =>
                 Number(report.department_id) ===
@@ -124,16 +133,24 @@ function AdminDashboard() {
         );
     };
 
-    const getDepartmentActiveCount = (departmentId) => {
-        return getDepartmentReports(departmentId).filter(
+    const getDepartmentActiveCount = (
+        departmentId
+    ) => {
+        return getDepartmentReports(
+            departmentId
+        ).filter(
             (report) =>
                 report.status !== "Resolved" &&
                 report.status !== "Closed"
         ).length;
     };
 
-    const getDepartmentResolvedCount = (departmentId) => {
-        return getDepartmentReports(departmentId).filter(
+    const getDepartmentResolvedCount = (
+        departmentId
+    ) => {
+        return getDepartmentReports(
+            departmentId
+        ).filter(
             (report) =>
                 report.status === "Resolved" ||
                 report.status === "Closed"
@@ -157,6 +174,24 @@ function AdminDashboard() {
         );
 
     }, [reports, selectedFilter]);
+
+    // ======================================================
+    // FILTERED DEPARTMENTS
+    // ======================================================
+
+    const filteredDepartments = useMemo(() => {
+
+        if (selectedFilter === "all") {
+            return departments;
+        }
+
+        return departments.filter(
+            (department) =>
+                Number(department.id) ===
+                Number(selectedFilter)
+        );
+
+    }, [selectedFilter]);
 
     // ======================================================
     // UPDATE STATUS
@@ -335,6 +370,7 @@ function AdminDashboard() {
             <div className="admin-header">
 
                 <div>
+
                     <div className="page-badge">
                         ⚙️ Administration
                     </div>
@@ -348,6 +384,7 @@ function AdminDashboard() {
                         review AI classifications and
                         manage department assignments.
                     </p>
+
                 </div>
 
                 <button
@@ -376,22 +413,31 @@ function AdminDashboard() {
             <section className="admin-summary-section">
 
                 <div className="admin-section-heading">
+
                     <div>
-                        <h2>Overall Summary</h2>
+
+                        <h2>
+                            Overall Summary
+                        </h2>
+
                         <p>
                             Quick overview of all civic complaints
                         </p>
+
                     </div>
+
                 </div>
 
                 <div className="admin-stats-grid">
 
                     <div className="admin-stat-card">
+
                         <div className="admin-stat-icon">
                             📋
                         </div>
 
                         <div>
+
                             <h3>
                                 {reports.length}
                             </h3>
@@ -399,15 +445,19 @@ function AdminDashboard() {
                             <p>
                                 Total Reports
                             </p>
+
                         </div>
+
                     </div>
 
                     <div className="admin-stat-card manual-stat">
+
                         <div className="admin-stat-icon">
                             ⚠️
                         </div>
 
                         <div>
+
                             <h3>
                                 {manualReviewReports.length}
                             </h3>
@@ -415,15 +465,19 @@ function AdminDashboard() {
                             <p>
                                 Manual Review
                             </p>
+
                         </div>
+
                     </div>
 
                     <div className="admin-stat-card active-stat">
+
                         <div className="admin-stat-icon">
                             🔄
                         </div>
 
                         <div>
+
                             <h3>
                                 {activeReports.length}
                             </h3>
@@ -431,15 +485,19 @@ function AdminDashboard() {
                             <p>
                                 Active Reports
                             </p>
+
                         </div>
+
                     </div>
 
                     <div className="admin-stat-card resolved-stat">
+
                         <div className="admin-stat-icon">
                             ✅
                         </div>
 
                         <div>
+
                             <h3>
                                 {getCount("Resolved")}
                             </h3>
@@ -447,15 +505,19 @@ function AdminDashboard() {
                             <p>
                                 Resolved
                             </p>
+
                         </div>
+
                     </div>
 
                     <div className="admin-stat-card closed-stat">
+
                         <div className="admin-stat-icon">
                             🔒
                         </div>
 
                         <div>
+
                             <h3>
                                 {getCount("Closed")}
                             </h3>
@@ -463,7 +525,9 @@ function AdminDashboard() {
                             <p>
                                 Closed
                             </p>
+
                         </div>
+
                     </div>
 
                 </div>
@@ -481,6 +545,7 @@ function AdminDashboard() {
                     <div className="manual-review-heading">
 
                         <div>
+
                             <div className="page-badge warning-badge">
                                 ⚠️ Action Required
                             </div>
@@ -494,13 +559,17 @@ function AdminDashboard() {
                                 confidently classified by AI.
                                 Please review and assign a department.
                             </p>
+
                         </div>
 
                         <div className="manual-count">
+
                             {manualReviewReports.length}
+
                             <span>
                                 Reports
                             </span>
+
                         </div>
 
                     </div>
@@ -518,6 +587,7 @@ function AdminDashboard() {
                                     <div className="manual-report-top">
 
                                         <div>
+
                                             <h3>
                                                 {report.report_code}
                                             </h3>
@@ -525,12 +595,15 @@ function AdminDashboard() {
                                             <p>
                                                 {report.description}
                                             </p>
+
                                         </div>
 
                                         <span className="manual-confidence">
+
                                             {report.ai_confidence
                                                 ? `${report.ai_confidence}%`
                                                 : "N/A"}
+
                                         </span>
 
                                     </div>
@@ -658,6 +731,7 @@ function AdminDashboard() {
                 <div className="admin-section-heading">
 
                     <div>
+
                         <h2>
                             Department Summary
                         </h2>
@@ -666,13 +740,52 @@ function AdminDashboard() {
                             See how many complaints are assigned
                             to each department.
                         </p>
+
+                    </div>
+
+                    {/* DEPARTMENT FILTER */}
+
+                    <div className="department-filter">
+
+                        <label>
+                            Filter Department
+                        </label>
+
+                        <select
+                            value={selectedFilter}
+                            onChange={(e) =>
+                                setSelectedFilter(
+                                    e.target.value
+                                )
+                            }
+                        >
+
+                            <option value="all">
+                                All Departments
+                            </option>
+
+                            {departments.map(
+                                (department) => (
+
+                                    <option
+                                        key={department.id}
+                                        value={department.id}
+                                    >
+                                        {department.name}
+                                    </option>
+
+                                )
+                            )}
+
+                        </select>
+
                     </div>
 
                 </div>
 
                 <div className="department-summary-grid">
 
-                    {departments.map(
+                    {filteredDepartments.map(
                         (department) => {
 
                             const departmentReports =
@@ -750,7 +863,7 @@ function AdminDashboard() {
             </section>
 
             {/* ==================================================
-                DEPARTMENT FILTER
+                DEPARTMENT FILTER / DETAILED REPORTS
             ================================================== */}
 
             <section className="admin-details-section">
@@ -758,6 +871,7 @@ function AdminDashboard() {
                 <div className="admin-details-header">
 
                     <div>
+
                         <h2>
                             Detailed Reports
                         </h2>
@@ -765,6 +879,7 @@ function AdminDashboard() {
                         <p>
                             View individual complaints by department.
                         </p>
+
                     </div>
 
                     <div className="department-filter">
@@ -866,6 +981,7 @@ function AdminDashboard() {
                                     <div className="report-header">
 
                                         <div>
+
                                             <h2>
                                                 {report.report_code}
                                             </h2>
@@ -875,6 +991,7 @@ function AdminDashboard() {
                                                 {report.department_name ||
                                                     "Needs Manual Review"}
                                             </span>
+
                                         </div>
 
                                         <span className="status-badge">
@@ -888,6 +1005,7 @@ function AdminDashboard() {
                                     <div className="admin-ai-info">
 
                                         <p>
+
                                             <strong>
                                                 🤖 AI Detected Issue:
                                             </strong>{" "}
@@ -895,9 +1013,11 @@ function AdminDashboard() {
                                             {report.ai_detected_issue ||
                                                 report.category_name ||
                                                 "Not detected"}
+
                                         </p>
 
                                         <p>
+
                                             <strong>
                                                 📊 AI Confidence:
                                             </strong>{" "}
@@ -905,6 +1025,7 @@ function AdminDashboard() {
                                             {report.ai_confidence
                                                 ? `${report.ai_confidence}%`
                                                 : "Not available"}
+
                                         </p>
 
                                     </div>
@@ -914,6 +1035,7 @@ function AdminDashboard() {
                                     <div className="admin-info-grid">
 
                                         <div>
+
                                             <strong>
                                                 Citizen
                                             </strong>
@@ -922,9 +1044,11 @@ function AdminDashboard() {
                                                 {report.citizen_name ||
                                                     "Not available"}
                                             </span>
+
                                         </div>
 
                                         <div>
+
                                             <strong>
                                                 Email
                                             </strong>
@@ -933,9 +1057,11 @@ function AdminDashboard() {
                                                 {report.citizen_email ||
                                                     "Not available"}
                                             </span>
+
                                         </div>
 
                                         <div>
+
                                             <strong>
                                                 Phone
                                             </strong>
@@ -944,9 +1070,11 @@ function AdminDashboard() {
                                                 {report.citizen_phone ||
                                                     "Not available"}
                                             </span>
+
                                         </div>
 
                                         <div>
+
                                             <strong>
                                                 Created
                                             </strong>
@@ -956,6 +1084,7 @@ function AdminDashboard() {
                                                     report.created_at
                                                 ).toLocaleString()}
                                             </span>
+
                                         </div>
 
                                     </div>
@@ -1015,20 +1144,20 @@ function AdminDashboard() {
                                     {report.latitude &&
                                         report.longitude && (
 
-                                        <div className="admin-gps">
+                                            <div className="admin-gps">
 
-                                            <strong>
-                                                GPS
-                                            </strong>
+                                                <strong>
+                                                    GPS
+                                                </strong>
 
-                                            <span>
-                                                {report.latitude},{" "}
-                                                {report.longitude}
-                                            </span>
+                                                <span>
+                                                    {report.latitude},{" "}
+                                                    {report.longitude}
+                                                </span>
 
-                                        </div>
+                                            </div>
 
-                                    )}
+                                        )}
 
                                     {/* STATUS */}
 

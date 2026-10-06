@@ -1,5 +1,8 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+
 import "./App.css";
+
+import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
@@ -8,87 +11,184 @@ import MyReports from "./pages/MyReports";
 import TrackReport from "./pages/TrackReport";
 import DepartmentDashboard from "./pages/DepartmentDashboard";
 import AdminDashboard from "./pages/AdminDashboard";
+
 import ProtectedRoute from "./components/ProtectedRoute";
 import Navbar from "./components/Navbar";
 
-function App() {
+
+function AppContent() {
+
+    const location = useLocation();
+
+    /*
+     * Home, Login and Register pages have
+     * their own header/design.
+     *
+     * So the normal Navbar is hidden on these pages.
+     */
+    const hideNavbar =
+        location.pathname === "/" ||
+        location.pathname === "/login" ||
+        location.pathname === "/register";
+
+
     return (
-        <BrowserRouter>
-          <Navbar />
+        <>
+            {!hideNavbar && <Navbar />}
 
-          <Routes>
+            <Routes>
 
-                {/* Login */}
-                <Route path="/login" element={<Login />} />
+                {/* ==================================================
+                    HOME / LANDING PAGE
+                ================================================== */}
 
-                <Route path="/register" element={<Register />} />
+                <Route
+                    path="/"
+                    element={<Home />}
+                />
 
-                {/* Citizen Dashboard */}
+
+                {/* ==================================================
+                    LOGIN
+                ================================================== */}
+
+                <Route
+                    path="/login"
+                    element={<Login />}
+                />
+
+
+                {/* ==================================================
+                    REGISTER
+                ================================================== */}
+
+                <Route
+                    path="/register"
+                    element={<Register />}
+                />
+
+
+                {/* ==================================================
+                    CITIZEN DASHBOARD
+                ================================================== */}
+
                 <Route
                     path="/dashboard"
                     element={
-                        <ProtectedRoute allowedRoles={["citizen"]}>
+                        <ProtectedRoute
+                            allowedRoles={["citizen"]}
+                        >
                             <Dashboard />
                         </ProtectedRoute>
                     }
                 />
 
-                {/* Report Issue */}
+
+                {/* ==================================================
+                    REPORT ISSUE
+                ================================================== */}
+
                 <Route
                     path="/report"
                     element={
-                        <ProtectedRoute allowedRoles={["citizen"]}>
+                        <ProtectedRoute
+                            allowedRoles={["citizen"]}
+                        >
                             <ReportIssue />
                         </ProtectedRoute>
                     }
                 />
 
-                {/* My Reports */}
+
+                {/* ==================================================
+                    MY REPORTS
+                ================================================== */}
+
                 <Route
                     path="/my-reports"
                     element={
-                        <ProtectedRoute allowedRoles={["citizen"]}>
+                        <ProtectedRoute
+                            allowedRoles={["citizen"]}
+                        >
                             <MyReports />
                         </ProtectedRoute>
                     }
                 />
 
-                {/* Track Report */}
+
+                {/* ==================================================
+                    TRACK REPORT
+                ================================================== */}
+
                 <Route
                     path="/track"
                     element={
-                        <ProtectedRoute allowedRoles={["citizen"]}>
+                        <ProtectedRoute
+                            allowedRoles={["citizen"]}
+                        >
                             <TrackReport />
                         </ProtectedRoute>
                     }
                 />
 
-                {/* Department Dashboard */}
+
+                {/* ==================================================
+                    DEPARTMENT DASHBOARD
+                ================================================== */}
+
                 <Route
                     path="/department"
                     element={
-                        <ProtectedRoute allowedRoles={["department"]}>
+                        <ProtectedRoute
+                            allowedRoles={["department"]}
+                        >
                             <DepartmentDashboard />
                         </ProtectedRoute>
                     }
                 />
 
-                {/* Admin Dashboard */}
+
+                {/* ==================================================
+                    ADMIN DASHBOARD
+                ================================================== */}
+
                 <Route
                     path="/admin"
                     element={
-                        <ProtectedRoute allowedRoles={["admin"]}>
+                        <ProtectedRoute
+                            allowedRoles={["admin"]}
+                        >
                             <AdminDashboard />
                         </ProtectedRoute>
                     }
                 />
 
-                {/* Default page */}
-                <Route path="/" element={<Login />} />
+
+                {/* ==================================================
+                    UNKNOWN URL
+                ================================================== */}
+
+                <Route
+                    path="*"
+                    element={<Home />}
+                />
 
             </Routes>
+        </>
+    );
+}
+
+
+function App() {
+
+    return (
+        <BrowserRouter>
+
+            <AppContent />
+
         </BrowserRouter>
     );
 }
+
 
 export default App;
