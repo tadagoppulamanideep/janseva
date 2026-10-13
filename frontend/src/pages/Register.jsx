@@ -62,7 +62,7 @@ function Register() {
                 </h1>
 
                 <p>
-                    Create your JanaSeva account to report
+                    Create your JanSeva account to report
                     civic problems, track complaints and
                     contribute to a better community.
                 </p>
@@ -101,7 +101,7 @@ function Register() {
                     <h2>Create Account</h2>
 
                     <p>
-                        Register to start using JanaSeva
+                        Register to start using JanSeva
                     </p>
 
                 </div>
@@ -226,7 +226,7 @@ function Register() {
                         onClick={() => navigate("/login")}
                         className="register-link"
                     >
-                        Login to JanaSeva
+                        Login to JanSeva
                     </button>
 
                 </div>

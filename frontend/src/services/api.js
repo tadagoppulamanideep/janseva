@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-    baseURL: "https://janseva-n6bp.onrender.com/api"
+    baseURL: import.meta.env.VITE_API_URL || "https://janseva-n6bp.onrender.com/api"
 });
 
 export default api;
