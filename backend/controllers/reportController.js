@@ -34,48 +34,52 @@ const createReport = async (req, res) => {
 
 
         // --------------------------------
-        // SEND IMAGE TO AI SERVICE
+        // SEND IMAGE TO AI SERVICE (WITH FALLBACK)
         // --------------------------------
 
-        const imageBuffer = fs.readFileSync(req.file.path);
+        let detectedIssue = "Needs Review";
+        let aiConfidence = 0;
 
-        const formData = new FormData();
+        if (process.env.AI_SERVICE_URL) {
+            try {
+                const imageBuffer = fs.readFileSync(req.file.path);
 
-        formData.append(
-            "file",
-            new Blob(
-                [imageBuffer],
-                { type: req.file.mimetype }
-            ),
-            req.file.originalname
-        );
+                const formData = new FormData();
 
-        const aiResponse = await fetch(
-            `${process.env.AI_SERVICE_URL}/analyze`,
-            {
-                method: "POST",
-                body: formData
+                formData.append(
+                    "file",
+                    new Blob(
+                        [imageBuffer],
+                        { type: req.file.mimetype }
+                    ),
+                    req.file.originalname
+                );
+
+                const aiResponse = await fetch(
+                    `${process.env.AI_SERVICE_URL}/analyze`,
+                    {
+                        method: "POST",
+                        body: formData
+                    }
+                );
+
+                if (aiResponse.ok) {
+                    const aiResult = await aiResponse.json();
+                    if (aiResult.success) {
+                        detectedIssue = aiResult.issue || "Needs Review";
+                        aiConfidence = aiResult.confidence || 0;
+                        console.log("AI detected:", detectedIssue);
+                        console.log("AI confidence:", aiConfidence);
+                    }
+                } else {
+                    console.warn("AI service returned non-200 status:", aiResponse.status);
+                }
+            } catch (aiErr) {
+                console.warn("AI service unavailable, falling back to Needs Review:", aiErr.message);
             }
-        );
-
-        if (!aiResponse.ok) {
-            throw new Error("AI service request failed");
+        } else {
+            console.warn("AI_SERVICE_URL not configured, defaulting to Needs Review");
         }
-
-        const aiResult = await aiResponse.json();
-
-        if (!aiResult.success) {
-            return res.status(400).json({
-                success: false,
-                message: "AI could not analyze the uploaded image"
-            });
-        }
-
-        const detectedIssue = aiResult.issue;
-        const aiConfidence = aiResult.confidence;
-
-        console.log("AI detected:", detectedIssue);
-        console.log("AI confidence:", aiConfidence);
 
 
         // --------------------------------
@@ -149,6 +153,15 @@ const createReport = async (req, res) => {
 
         const imageUrl =
             cloudinaryResult.secure_url;
+
+        // Clean up temporary local upload file
+        try {
+            if (fs.existsSync(req.file.path)) {
+                fs.unlinkSync(req.file.path);
+            }
+        } catch (unlinkErr) {
+            console.warn("Could not delete temp file:", unlinkErr.message);
+        }
 
 
         // --------------------------------
@@ -229,6 +242,9 @@ const createReport = async (req, res) => {
         });
 
     } catch (error) {
+        if (req.file && req.file.path && fs.existsSync(req.file.path)) {
+            try { fs.unlinkSync(req.file.path); } catch (e) {}
+        }
 
         console.error(
             "Create report error:",
@@ -237,7 +253,7 @@ const createReport = async (req, res) => {
 
         res.status(500).json({
             success: false,
-            message: "Failed to create report"
+            message: error.message || "Failed to create report"
         });
     }
 };

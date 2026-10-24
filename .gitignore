@@ -2,6 +2,9 @@ node_modules/
 .env
 venv/
 __pycache__/
-uploads/
+backend/uploads/*
+!backend/uploads/.gitkeep
+uploads/*
+!uploads/.gitkeep
 dist/
 build/
