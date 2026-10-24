@@ -21,19 +21,20 @@ app.get("/", (req, res) => {
 
 app.get("/api/test-db", async (req, res) => {
     try {
-        const [rows] = await db.query("SELECT 1 AS result");
+        const [users] = await db.query("SELECT user_id, name, email, role, department_id FROM users");
+        const [departments] = await db.query("SELECT * FROM departments");
 
         res.json({
             success: true,
-            message: "MySQL database connected successfully!",
-            data: rows
+            users,
+            departments
         });
     } catch (error) {
         console.error(error);
 
         res.status(500).json({
             success: false,
-            message: "Database connection failed"
+            message: "Database query failed: " + error.message
         });
     }
 });
