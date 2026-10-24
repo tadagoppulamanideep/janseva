@@ -20,39 +20,30 @@ app.get("/", (req, res) => {
     });
 });
 
-app.get("/api/seed-departments", async (req, res) => {
+app.get("/api/set-department-passwords", async (req, res) => {
     try {
-        const hashedPassword = await bcrypt.hash("password123", 10);
-        const deptUsers = [
-            { name: "GHMC Electrical Officer", email: "electrical@civicfix.com", department_id: 2 },
-            { name: "HMWSSB Water Officer", email: "water@civicfix.com", department_id: 3 },
-            { name: "GHMC Sanitation Officer", email: "sanitation@civicfix.com", department_id: 4 },
-            { name: "Traffic Police Officer", email: "traffic@civicfix.com", department_id: 5 },
-            { name: "TGSPDCL Electricity Officer", email: "electricity@civicfix.com", department_id: 6 }
+        const updates = [
+            { email: "electrical@civicfix.com", password: "electric@123" },
+            { email: "water@civicfix.com", password: "water@123" },
+            { email: "sanitation@civicfix.com", password: "sanitation@123" },
+            { email: "traffic@civicfix.com", password: "traffic@123" },
+            { email: "electricity@civicfix.com", password: "electric@123" },
+            { email: "roads@civicfix.com", password: "roads@123" }
         ];
 
-        const created = [];
-        for (const u of deptUsers) {
-            const [existing] = await db.query("SELECT user_id FROM users WHERE email = ?", [u.email]);
-            if (existing.length === 0) {
-                await db.query(
-                    `INSERT INTO users (name, email, password, role, department_id)
-                     VALUES (?, ?, ?, 'department', ?)`,
-                    [u.name, u.email, hashedPassword, u.department_id]
-                );
-                created.push(u.email);
-            }
+        for (const item of updates) {
+            const hash = await bcrypt.hash(item.password, 10);
+            await db.query("UPDATE users SET password = ? WHERE email = ?", [hash, item.email]);
         }
 
         res.json({
             success: true,
-            message: "Department accounts seeded successfully",
-            created,
-            defaultPassword: "password123"
+            message: "All department passwords updated successfully",
+            updated: updates.map(u => u.email)
         });
-    } catch (error) {
-        console.error("Seed error:", error);
-        res.status(500).json({ success: false, error: error.message });
+    } catch (err) {
+        console.error("Password update error:", err);
+        res.status(500).json({ success: false, error: err.message });
     }
 });
 
