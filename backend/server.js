@@ -1,5 +1,6 @@
 const express = require("express");
 const cors = require("cors");
+const bcrypt = require("bcryptjs");
 require("dotenv").config();
 
 const db = require("./config/db");
@@ -19,23 +20,39 @@ app.get("/", (req, res) => {
     });
 });
 
-app.get("/api/test-db", async (req, res) => {
+app.get("/api/seed-departments", async (req, res) => {
     try {
-        const [users] = await db.query("SELECT user_id, name, email, role, department_id FROM users");
-        const [departments] = await db.query("SELECT * FROM departments");
+        const hashedPassword = await bcrypt.hash("password123", 10);
+        const deptUsers = [
+            { name: "GHMC Electrical Officer", email: "electrical@civicfix.com", department_id: 2 },
+            { name: "HMWSSB Water Officer", email: "water@civicfix.com", department_id: 3 },
+            { name: "GHMC Sanitation Officer", email: "sanitation@civicfix.com", department_id: 4 },
+            { name: "Traffic Police Officer", email: "traffic@civicfix.com", department_id: 5 },
+            { name: "TGSPDCL Electricity Officer", email: "electricity@civicfix.com", department_id: 6 }
+        ];
+
+        const created = [];
+        for (const u of deptUsers) {
+            const [existing] = await db.query("SELECT user_id FROM users WHERE email = ?", [u.email]);
+            if (existing.length === 0) {
+                await db.query(
+                    `INSERT INTO users (name, email, password, role, department_id)
+                     VALUES (?, ?, ?, 'department', ?)`,
+                    [u.name, u.email, hashedPassword, u.department_id]
+                );
+                created.push(u.email);
+            }
+        }
 
         res.json({
             success: true,
-            users,
-            departments
+            message: "Department accounts seeded successfully",
+            created,
+            defaultPassword: "password123"
         });
     } catch (error) {
-        console.error(error);
-
-        res.status(500).json({
-            success: false,
-            message: "Database query failed: " + error.message
-        });
+        console.error("Seed error:", error);
+        res.status(500).json({ success: false, error: error.message });
     }
 });
 
