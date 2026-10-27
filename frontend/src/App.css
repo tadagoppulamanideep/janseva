@@ -1,3 +1,12 @@
+/* Global button pointer */
+button {
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: not-allowed !important;
+}
+
 
 /* =========================================================
    JANSEVA - DEPARTMENT DASHBOARD
@@ -953,9 +962,10 @@ margin-bottom: 15px;
 
 .report-form button {
 margin-top: 5px;
+cursor: pointer;
 }
 
-.report-form button {
+.report-form button:disabled {
 opacity: 0.6;
 cursor: not-allowed;
 }
@@ -1391,9 +1401,10 @@ padding: 14px 35px;
 font-size: 17px;
 border-radius: 8px;
 font-weight: bold;
+cursor: pointer;
 }
 
-.submit-report-button {
+.submit-report-button:disabled {
 cursor: not-allowed;
 opacity: 0.6;
 }
@@ -2586,14 +2597,15 @@ border-radius: 8px;
 font-size: 16px;
 font-weight: bold;
 background: #1f4e79;
+cursor: pointer;
 }
 
-.auth-submit {
+.auth-submit:hover {
 background: #173b5c;
 opacity: 1;
 }
 
-.auth-submit {
+.auth-submit:disabled {
 opacity: 0.6;
 cursor: not-allowed;
 }
@@ -3167,7 +3179,7 @@ font-weight: 700;
 cursor: pointer;
 }
 
-.upload-button {
+.upload-button:hover {
 background: #173b5c;
 }
 
@@ -3214,7 +3226,7 @@ font-weight: 700;
 cursor: pointer;
 }
 
-.location-button {
+.location-button:hover {
 background: #173b5c;
 }
 
@@ -3355,11 +3367,11 @@ border: none;
 cursor: pointer;
 }
 
-.submit-report-button {
+.submit-report-button:hover {
 background: #173b5c;
 }
 
-.submit-report-button {
+.submit-report-button:disabled {
 opacity: 0.65;
 cursor: not-allowed;
 }
@@ -3744,14 +3756,15 @@ color: white;
 border-radius: 8px;
 font-weight: 700;
 white-space: nowrap;
+cursor: pointer;
 }
 
-.track-search-row button {
+.track-search-row button:hover {
 background: #173b5c;
 opacity: 1;
 }
 
-.track-search-row button {
+.track-search-row button:disabled {
 opacity: .6;
 cursor: not-allowed;
 }
