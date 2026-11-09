@@ -24,21 +24,13 @@ app.get("/api/db-health", async (req, res) => {
         const [rows] = await db.query("SELECT 1 AS alive");
         res.json({
             success: true,
-            message: "Database is connected and alive",
-            host: process.env.DB_HOST,
-            port: process.env.DB_PORT,
-            data: rows
+            message: "Database is connected and alive"
         });
     } catch (error) {
-        console.error("DB Health check error:", error);
+        console.error("DB Health check error:", error.message);
         res.status(500).json({
             success: false,
-            message: "Database connection failed",
-            error_code: error.code,
-            error_errno: error.errno,
-            error_message: error.message,
-            db_host: process.env.DB_HOST ? `${process.env.DB_HOST.slice(0, 10)}...` : null,
-            db_port: process.env.DB_PORT
+            message: "Database connection failed"
         });
     }
 });
